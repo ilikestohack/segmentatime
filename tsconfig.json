@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist",
+        "allowJs": true,
+        "target": "ES6",
+        "module": "nodenext",
+        "lib": ["DOM", "ES6"],
+        "moduleResolution": "nodenext",
+        "esModuleInterop": true
+    },
+    "include": ["./src/**/*"]
+    // "extends": "@tsconfig/node20/tsconfig.json"
+}
