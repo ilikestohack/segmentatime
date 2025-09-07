@@ -25,7 +25,27 @@
     <header class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2 pt-2">Time Management System</h1>
         <p class="text-neutral">Today's Schedule for {data.user.name}</p>
-        <p class="text-neutral">{data.user.points} Points</p>
+        <div class="flex">
+            <svg 
+                class="w-6 h-6 text-red-500" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <!-- Outer green rind -->
+                <circle cx="12" cy="12" r="10" fill="green" />
+
+                <!-- Inner red flesh (inherits Tailwind color via currentColor) -->
+                <circle cx="12" cy="12" r="8" fill="currentColor" />
+
+                <!-- Seeds -->
+                <ellipse cx="12" cy="8" rx="0.6" ry="1" fill="black"/>
+                <ellipse cx="9" cy="11" rx="0.6" ry="1" fill="black"/>
+                <ellipse cx="15" cy="11" rx="0.6" ry="1" fill="black"/>
+                <ellipse cx="10.5" cy="15" rx="0.6" ry="1" fill="black"/>
+                <ellipse cx="13.5" cy="15" rx="0.6" ry="1" fill="black"/>
+            </svg>
+            <p class="text-neutral ml-1">{data.user.points} Points</p>
+        </div>
     </header>
 
     <!-- Current Segment (Highlighted) -->
@@ -76,8 +96,23 @@
                 <div class="grid grid-cols-3 gap-2 w-fit">
                     <!-- Watermelon slice icons -->
                     {#each Array.from({ length: 6 }) as _, index}
-                        <svg class="w-6 h-6 {index < fs!.pointsAvailable ? 'text-red-500' : 'text-gray-300'}" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L11 17v1.93zm1.5-2.93c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S14.67 11 15.5 11s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm2.5-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                        <svg 
+                            class="w-6 h-6 {index < fs!.pointsAvailable ? 'text-red-500' : 'text-green-600'}" 
+                            viewBox="0 0 24 24" 
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <!-- Outer green rind -->
+                            <circle cx="12" cy="12" r="10" fill="green" />
+
+                            <!-- Inner red flesh (inherits Tailwind color via currentColor) -->
+                            <circle cx="12" cy="12" r="8" fill="currentColor" />
+
+                            <!-- Seeds -->
+                            <ellipse cx="12" cy="8" rx="0.6" ry="1" fill="black"/>
+                            <ellipse cx="9" cy="11" rx="0.6" ry="1" fill="black"/>
+                            <ellipse cx="15" cy="11" rx="0.6" ry="1" fill="black"/>
+                            <ellipse cx="10.5" cy="15" rx="0.6" ry="1" fill="black"/>
+                            <ellipse cx="13.5" cy="15" rx="0.6" ry="1" fill="black"/>
                         </svg>
                     {/each}
                 </div>
@@ -230,5 +265,31 @@
                 </div>
             </div>
         </div> -->
+    </div>
+
+    <div class="fixed bottom-6 right-6 flex items-center gap-3">
+        <!-- User editor button -->
+        <a
+            class="p-4 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 shadow-lg"
+            aria-label="Edit User"
+            href="/user"
+        >
+            <!-- person icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </a>
+
+        <!-- Create item button -->
+        <a
+            class="p-4 rounded-full bg-green-600 text-white hover:bg-green-700 shadow-xl"
+            aria-label="Create Item"
+            href="/edit/-1"
+        >
+            <!-- plus icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+        </a>
     </div>
 </div>

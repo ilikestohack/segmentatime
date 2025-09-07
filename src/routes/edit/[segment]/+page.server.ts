@@ -8,6 +8,7 @@ import {
 	type SegmentI
 } from '$lib/server/databases/segment';
 import { getLimitOptions, getSegmentTypes } from '$lib/server/databases/user';
+import { redirect } from '@sveltejs/kit';
 
 let segmentId = -1;
 
@@ -48,6 +49,7 @@ export const load: PageServerLoad = async ({ params }) => {
 export const actions: Actions = {
 	save: async ({ request }) => {
 		const form = await request.formData();
+		const action = form.get('action');
 
 		const segment: SegmentI = {
 			id: segmentId,
@@ -66,6 +68,12 @@ export const actions: Actions = {
 		};
 
 		await setSegment(segment);
-		return { success: true };
+
+		if (action === 'addAnother') {
+			redirect(303, '/edit/-1');
+		} else {
+			redirect(303, '/');
+		}
+		// return { success: true };
 	}
 };

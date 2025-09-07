@@ -148,8 +148,23 @@
                     <div class="mt-3">
                         <div class="grid grid-cols-6 gap-2 w-fit">
                             {#each Array.from({ length: 6 }) as _, index}
-                                <svg class="w-6 h-6 {index < segment.pointsAvailable ? 'text-red-500' : 'text-gray-300'}" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L11 17v1.93zm1.5-2.93c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-3c-.83 0-1.5-.67-1.5-1.5S14.67 11 15.5 11s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm2.5-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+                                <svg 
+                                    class="w-6 h-6 {index < segment.pointsAvailable ? 'text-red-500' : 'text-green-600'}" 
+                                    viewBox="0 0 24 24" 
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <!-- Outer green rind -->
+                                    <circle cx="12" cy="12" r="10" fill="green" />
+
+                                    <!-- Inner red flesh (inherits Tailwind color via currentColor) -->
+                                    <circle cx="12" cy="12" r="8" fill="currentColor" />
+
+                                    <!-- Seeds -->
+                                    <ellipse cx="12" cy="8" rx="0.6" ry="1" fill="black"/>
+                                    <ellipse cx="9" cy="11" rx="0.6" ry="1" fill="black"/>
+                                    <ellipse cx="15" cy="11" rx="0.6" ry="1" fill="black"/>
+                                    <ellipse cx="10.5" cy="15" rx="0.6" ry="1" fill="black"/>
+                                    <ellipse cx="13.5" cy="15" rx="0.6" ry="1" fill="black"/>
                                 </svg>
                             {/each}
                         </div>
@@ -169,19 +184,19 @@
 
                 <!-- Action Buttons -->
                 <div class="flex flex-wrap gap-3 pt-4 border-t border-gray-200">
-                    <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
+                    <button type="submit" name="action" value="add" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                         Save Segment
                     </button>
-                    <button type="button" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors flex items-center gap-2">
+                    <button type="submit" name="action" value="addAnother" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                         Save & Add Another
                     </button>
-                    <a href="index.html" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors flex items-center gap-2">
+                    <a href="/" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition-colors flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -205,11 +220,11 @@
             // Update watermelon colors
             watermelons.forEach((watermelon, index) => {
                 if (index < value) {
-                    watermelon.classList.remove('text-gray-300');
+                    watermelon.classList.remove('text-green-600');
                     watermelon.classList.add('text-red-500');
                 } else {
                     watermelon.classList.remove('text-red-500');
-                    watermelon.classList.add('text-gray-300');
+                    watermelon.classList.add('text-green-600');
                 }
             });
         });
