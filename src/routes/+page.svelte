@@ -25,6 +25,7 @@
     <header class="mb-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-2 pt-2">Time Management System</h1>
         <p class="text-neutral">Today's Schedule for {data.user.name}</p>
+        <p class="text-neutral">{data.user.points} Points</p>
     </header>
 
     <!-- Current Segment (Highlighted) -->

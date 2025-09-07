@@ -42,35 +42,35 @@ interface PrismaSegment {
 	userId: number;
 }
 
-function prismaToSegment(ps: PrismaSegment): SegmentI {
+async function prismaToSegment(ps: PrismaSegment): Promise<SegmentI> {
 	return {
 		id: ps.id,
 		ts: ps.ts,
 		userId: ps.userId,
-		type: getSegmentTypes()[ps.type],
+		type: (await getSegmentTypes())[ps.type],
 		title: ps.title,
 		timeAllocation: ps.timeAllocation,
 		timeExtension: ps.timeExtension as TimeExtensionMode,
 		timeExtensionDifference: ps.timeExtensionDifference,
 		maxBreaks: ps.maxBreaks,
-		limits: ps.limits.split(','),
+		limits: JSON.parse(ps.limits) as string[],
 		pointsAvailable: ps.pointsAvailable,
 		notes: ps.notes,
 		completion: ps.completion
 	};
 }
 
-function segmentToPrisma(s: SegmentI): PrismaSegment {
+async function segmentToPrisma(s: SegmentI): Promise<PrismaSegment> {
 	return {
 		id: s.id,
 		ts: s.ts,
-		type: getSegmentTypes().indexOf(s.type),
+		type: (await getSegmentTypes()).indexOf(s.type),
 		title: s.title,
 		timeAllocation: s.timeAllocation,
 		timeExtension: s.timeExtension,
 		timeExtensionDifference: s.timeExtensionDifference,
 		maxBreaks: s.maxBreaks,
-		limits: s.limits.join(','),
+		limits: JSON.stringify(s.limits),
 		pointsAvailable: s.pointsAvailable,
 		notes: s.notes,
 		completion: s.completion,
@@ -110,7 +110,7 @@ export async function getNextSegment(
 }
 
 export async function setSegment(segment: SegmentI) {
-	const { id, ...idLessSegment } = segmentToPrisma(segment);
+	const { id, ...idLessSegment } = await segmentToPrisma(segment);
 
 	await prisma.segment.upsert({
 		where: { id },
@@ -129,10 +129,10 @@ export async function setItem(segmentId: number, userId: number, data: object) {
 	});
 }
 
-export function getDefaultSegment(): SegmentI {
+export async function getDefaultSegment(): Promise<SegmentI> {
 	return {
 		id: -1,
-		type: getSegmentTypes()[0],
+		type: (await getSegmentTypes())[0],
 		title: 'Example Segment',
 		ts: BigInt(Date.now()),
 		userId: user.id,

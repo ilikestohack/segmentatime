@@ -5,14 +5,15 @@ import {
 	setItem,
 	type SegmentI
 } from '$lib/server/databases/segment';
-import { getSegmentOrder, getUser } from '$lib/server/databases/user';
+import { getSegmentOrder, getUser, setUserItem } from '$lib/server/databases/user';
 
-const user = await getUser();
-const segmentOrder = getSegmentOrder();
+let user = await getUser();
+const segmentOrder = await getSegmentOrder();
 let firstSegment: SegmentI | null | false = false;
 
 export const load: PageServerLoad = async () => {
 	// Backend logic here (e.g., DB query)
+	user = await getUser();
 	const segments: SegmentI[] = [];
 	firstSegment = false;
 
@@ -25,29 +26,36 @@ export const load: PageServerLoad = async () => {
 		}
 	}
 
-	if (firstSegment === false) firstSegment = getDefaultSegment();
+	if (firstSegment === false) firstSegment = await getDefaultSegment();
 
 	const fsOut = firstSegment as SegmentI | null;
 
 	return {
-		user: { name: 'Charlie', role: 'admin' },
+		user,
 		firstSegment: fsOut,
 		segments
 	};
 };
 
-async function complete(segmentId: number, value: -1 | 0 | 1) {
-	await setItem(segmentId, user.id, { completion: value });
+async function complete(segment: SegmentI, value: -1 | 0 | 1) {
+	await setItem(segment.id, user.id, { completion: value });
+
+	if (value > 0) {
+		// Increase points
+		const points = user.points + segment.pointsAvailable;
+		await setUserItem(user.id, { points });
+	}
+
 	segmentOrder.shift();
 }
 
 export const actions: Actions = {
 	complete: async () => {
-		await complete((firstSegment as SegmentI).id, 1);
+		await complete(firstSegment as SegmentI, 1);
 		return { success: true };
 	},
 	skip: async () => {
-		await complete((firstSegment as SegmentI).id, 0);
+		await complete(firstSegment as SegmentI, 0);
 		return { success: true };
 	}
 };

@@ -11,22 +11,31 @@ export async function getUser() {
 
 	defaultUser ??= await prisma.user.create({
 		data: {
-			name: 'Default'
+			name: 'Default',
+			points: 0,
+			segmentOrder: JSON.stringify([0, 1, 2, 3]),
+			segmentTypes: JSON.stringify(['School', 'Work', 'Home', 'Misc'])
 		}
 	});
 
 	return defaultUser;
 }
 
-export function getSegmentOrder() {
-	// return [0, 1, 2];
-	const arr = [0, 1, 2];
-	const repeated = Array.from({ length: 5 }, () => arr).flat();
-	return repeated;
+export async function setUserItem(userId: number, data: object) {
+	return await prisma.user.update({
+		where: {
+			id: userId
+		},
+		data
+	});
 }
 
-export function getSegmentTypes() {
-	return ['School', 'Work', 'Etc'];
+export async function getSegmentOrder() {
+	return JSON.parse((await getUser()).segmentOrder) as number[];
+}
+
+export async function getSegmentTypes() {
+	return JSON.parse((await getUser()).segmentTypes) as string[];
 }
 
 export function getLimitOptions() {

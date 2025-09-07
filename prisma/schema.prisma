@@ -11,13 +11,16 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  segments Segment[]
+  id            Int       @id @default(autoincrement())
+  name          String
+  points        Int
+  segmentOrder  String    @default("[]") // Array of numbers
+  segmentTypes  String    @default("[]") // Array of strings
+  segments      Segment[]
 }
 
 model Segment {
-  id                        Int     @id @default(autoincrement())
+  id                        Int       @id @default(autoincrement())
   ts                        BigInt
   type                      Int
   title                     String
@@ -25,10 +28,10 @@ model Segment {
   timeExtension             Int
   timeExtensionDifference   Int
   maxBreaks                 Int
-  limits                    String
+  limits                    String    @default("[]") // Array of strings
   pointsAvailable           Int
   notes                     String
   completion                Int
-  user                      User  @relation(fields: [userId], references: [id])
+  user                      User      @relation(fields: [userId], references: [id])
   userId                    Int
 }

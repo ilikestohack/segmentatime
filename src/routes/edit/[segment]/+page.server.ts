@@ -35,12 +35,12 @@ export const load: PageServerLoad = async ({ params }) => {
 
 	let segment = await getSegment(segmentId);
 
-	segment ??= getDefaultSegment();
+	segment ??= await getDefaultSegment();
 
 	return {
 		user: { name: 'Charlie', role: 'admin' },
 		limits: getLimits(segment.limits),
-		segmentTypes: getSegmentTypes(),
+		segmentTypes: await getSegmentTypes(),
 		segment
 	};
 };
