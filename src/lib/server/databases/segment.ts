@@ -109,6 +109,20 @@ export async function getNextSegment(
 	return segment === null ? null : prismaToSegment(segment);
 }
 
+export async function getAllIncompleteSegments(userId: number = user.id): Promise<SegmentI[]> {
+	const segments = await prisma.segment.findMany({
+		where: {
+			userId,
+			completion: 0
+		},
+		orderBy: {
+			ts: 'asc'
+		}
+	});
+
+	return Promise.all(segments.map((s) => prismaToSegment(s)));
+}
+
 export async function setSegment(segment: SegmentI) {
 	const { id, ...idLessSegment } = await segmentToPrisma(segment);
 
